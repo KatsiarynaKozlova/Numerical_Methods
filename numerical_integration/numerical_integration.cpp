@@ -15,64 +15,64 @@ double integrand(double x) {
 }
   
 double f_g(double x, double c) {
-    return (c * ((2 * pow(log(3 + 2 * x), 2)) / (3 + 2 * x)));
+    return (c * (( pow(log(x), 2)) / ( x)));
 }
 
-void Right_Rectangle(double h) {
-    double x = 1;
+void Right_Rectangle(double h, double a, double b) {
+    double x = a;
     double summa = 0;
     cout << "\n Метод правых прямоугольников\n";
-    while (x < 5) {
+    while (x < b) {
         summa = summa + h*integrand(x);
         x = x + h;
     }
     cout << " Интеграл равен =====> " << summa;
 }
 
-void Left_Rectangle(double h) {
-    double x = 1 + h ;
+void Left_Rectangle(double h, double a, double b) {
+    double x = a + h ;
     double summa = 0;
     cout << "\n\n Метод левых прямоугольников\n";
-    while (x <= 5) {
+    while (x <= b) {
         summa = summa + h*integrand(x);
         x = x + h;
     }
     cout << " Интеграл равен =====> " << summa;
 }
 
-void Central_Rectangle(double h) {
-    double x = 1;
+void Central_Rectangle(double h, double a, double b) {
+    double x = a;
     double summa = 0;
     cout << "\n\n Метод центральных прямоугольников\n";
-    while (x < 5) {
+    while (x < b) {
         summa = summa + h * integrand(x + h / 2);
         x = x + h;
     }
     cout << " Интеграл равен =====> " << summa;
 }
 
-void Trapeze(double h) {
-    double x = 1;
+void Trapeze(double h, double a, double b) {
+    double x = a;
     double summa = 0;
     cout << "\n\n Метод Трапеций\n";
-    while (x < 5) {
+    while (x < b) {
         summa = summa + (h / 2) * (integrand(x) + integrand(x + h));
         x = x + h;
     }
     cout << " Интеграл равен =====> " << summa;
 }
 
-void Parabola(double n) {
-    double h = 2 / n;
-    double x = 1 + h;
+void Parabola(double n, double a, double b) {
+    double h = (b-a)/(2*n);
+    double x = a + h;
     double summa =integrand(x-h);
     cout << "\n\n Метод парабол\n";
-    while (x < 5) {
+    while (x < b) {
         summa = summa + 4  * integrand(x);
         x = x + 2 * h;
     }
-    x = 1 + 2 * h;
-    while (x < 5) {
+    x = a + 2 * h;
+    while (x < b) {
         summa = summa + 2 * integrand(x);
         x = x + 2*h;
     }
@@ -80,13 +80,14 @@ void Parabola(double n) {
     cout << " Интеграл равен =====> " << summa;
 }
 
-void Gaus() {
+void Gaus( double a, double b) {
     cout << "\n\n Метод Гаусса\n";
     double g[6] = { 0.93246951 , 0.66120939, 0.23861919,-0.93246951,-0.66120939, -0.23861919 };
     double c[6] = { 0.1713249, 0.36076157, 0.46791393, 0.1713249, 0.36076157, 0.46791393 };
     double summa = 0;
     for (int i = 0; i < 6; i++) {
-        summa = summa + f_g(g[i], c[i]);
+        double x= ((a+b)/2+((b-a)/2)*g[i])
+        summa = summa + ((b-a)/2)* f_g(x, c[i]);
     }
     cout << " Интеграл равен =====> " << summa<<"\n\n";
 }
@@ -100,6 +101,9 @@ int main() {
     SetConsoleOutputCP(1251);
     
     double n;
+    //границы интегрирования
+    double a = 1;
+    double b = 5;
 
     cout << "   Численное дифференцирование \n\n";
     cout << "Введите число отрезков разбиения ======> ";
@@ -107,12 +111,12 @@ int main() {
 
     double h = 4 / n;
 
-    Right_Rectangle(h);
-    Left_Rectangle(h);
-    Central_Rectangle(h);
-    Trapeze(h);
-    Parabola(n);
-    Gaus();
+    Right_Rectangle(h, a, b);
+    Left_Rectangle(h, a, b);
+    Central_Rectangle(h, a, b);
+    Trapeze(h, a, b);
+    Parabola(n, a, b);
+    Gaus( a, b);
 
     system("pause");
     return 0;
